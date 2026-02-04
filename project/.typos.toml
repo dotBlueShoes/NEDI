@@ -1,0 +1,19 @@
+[files]
+# Read files marked as hidden also.
+ignore-hidden = false
+
+[default]
+# Ignore specific words / identifiers that are not typos.
+extend-ignore-re = [
+	'ot', 'OT', 'Ot'
+]
+
+
+# Add your own custom known-correct spellings, for txt.
+[default.extend-words]
+"aaa" = "aaa" # example
+
+
+# Add your own custom known-correct spellings, for code.
+[default.extend-identifiers]
+"aaa" = "aaa" # example

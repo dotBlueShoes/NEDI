@@ -1,0 +1,20 @@
+# ---
+# CONSTANTS
+# ---
+
+%cs             = C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\bin\compute-sanitizer
+%cmd		    = %_path%\.quail\cmd
+%pr 		    = amd64-win64-final
+%pd 		    = amd64-win64-debug
+%project_color	= #1459daff
+
+# ---
+# BUILDING
+# ---
+
+#
+# NOTE. We're always compiling with msvc - required by cuda.
+# 
+
+!bld		= %shell% "%cmd%\build" "%_path%" '%vcvarsall_dir%' '%pd%'
+!bbld		= %shell% "%cmd%\build" "%_path%" '%vcvarsall_dir%' '%pr%'

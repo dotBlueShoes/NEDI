@@ -1,0 +1,20 @@
+&shared.txt
+
+# ---
+# SUBPROJECTS
+# ---
+
+^-cmake     = \ .quail\cmake.txt
+^-shared    = \ .quail\shared.txt
+^-downscale = \ .quail\module\downscale.txt
+^-nedi 	    = \ .quail\module\nedi.txt
+
+
+# ---
+# BASIC
+# ---
+
+!config 	= start "" notepad++ %_path%/.quail/quail.txt
+!code 		= start "" "%vscode_path%" "%_path%"
+!github		= github "%_path%"
+!spellcheck = %typos_path% "%_path%\project"

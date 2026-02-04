@@ -1,0 +1,17 @@
+&../shared.txt
+
+%name       = nedi
+
+#
+# EXECUTE
+#
+
+!exe		= %shell% "%cmd%\execute\gpu_debug" '%cs%' "%_path%/build/%pd%/project/%name%" '%name%'
+!eexe		= %shell% "%cmd%\execute\with_resources" "%_path%/build/%pr%/project/%name%" '%name%'
+
+#
+# QUEUES
+#
+
+|run        = bld,exe
+|rrun       = bbld,eexe
