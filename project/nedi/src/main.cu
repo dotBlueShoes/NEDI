@@ -88,10 +88,6 @@ void ClampMNEDI (
     IN u8 REF dl,
     IN u8 REF rd
 ) {
-    //r32 nmin = min (lu, ur, dl, rd);
-    //r32 nmax = max (lu, ur, dl, rd);
-    //out = clamp (out, nmin, nmax);
-
     u8 nmin = min (lu, min(ur, min(dl, rd)));
     u8 nmax = max (lu, max(ur, max(dl, rd)));
     out = min (max ((u8)out, nmin), nmax);
@@ -1355,13 +1351,13 @@ void DiagonalOnlyNEDI_B (
     // Y-vector contains the values of the pixels contained on the window W.
     //
     //alignas (16 * 4) r32 bufferY[16]; vec16r32 Y (bufferY);
-    alignas (32 * 4) r32 bufferY[16]; vec24r32 Y (bufferY);
+    alignas (32 * 4) r32 bufferY[24]; vec24r32 Y (bufferY);
 
     //  ABOUT
     // C-matrix contains in each row the values of the four diagonal neighbors of each pixel listed on Y-vector.
     //
     //alignas (16 * 4 * 4) r32 bufferC[16 * 4]; mat16x4r32 C (bufferC);
-    alignas (32 * 4 * 4) r32 bufferC[16 * 4]; mat24x4r32 C (bufferC);
+    alignas (32 * 4 * 4) r32 bufferC[24 * 4]; mat24x4r32 C (bufferC);
 
     //  ABOUT
     // coeffs-vector. Each coefficient answers: "How much should this neighbor contribute to the unknown diagonal pixel?"
