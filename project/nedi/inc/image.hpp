@@ -77,7 +77,7 @@ namespace IMAGE::PACKED {
 
         // 1op (pdep): (3-cycles)
         //
-        register u32 packedChannel = _pdep_u32 (channels, META32_MASK_CHANNELS);
+        REG u32 packedChannel = _pdep_u32 (channels, META32_MASK_CHANNELS);
 
         //  ABOUT
         // Preserve width/height bits.

@@ -4,7 +4,7 @@
 // ---
 #define BLUELIB_IMPLEMENTATION
 #include "blue_impl.hpp"
-#include "cuda_impl.hpp"
+//#include "cuda_impl.hpp"
 #include "eigen_impl.hpp"
 // ---
 
@@ -15,19 +15,19 @@
 //using mat4x16r32 = Eigen::Matrix<r32, 4, 16>;
 //using mat4r32    = Eigen::Matrix<r32, 4, 4>;
 
-using mat4x1r32  = Eigen::Matrix<r32, 4, 1>;
+using mat4x1r32     = Eigen::Matrix<r32, 4, 1>;
 
-using mat16x4r32 = Eigen::Matrix<r32, 16, 4>;
-using vec16r32   = Eigen::Vector<r32, 16>;
+using mat16x4r32    = Eigen::Matrix<r32, 16, 4>;
+using vec16r32      = Eigen::Vector<r32, 16>;
 
-using mat12x4r32 = Eigen::Matrix<r32, 12, 4>;
-using vec12r32   = Eigen::Vector<r32, 12>;
+using mat12x4r32    = Eigen::Matrix<r32, 12, 4>;
+using vec12r32      = Eigen::Vector<r32, 12>;
 
-using mat24x4r32 = Eigen::Matrix<r32, 24, 4>;
-using vec24r32   = Eigen::Vector<r32, 24>;
+using mat24x4r32    = Eigen::Matrix<r32, 24, 4>;
+using vec24r32      = Eigen::Vector<r32, 24>;
 
-using mat = Eigen::MatrixXf;
-using vec = Eigen::VectorXf;
+using mat           = Eigen::MatrixXf;
+using vec           = Eigen::VectorXf;
 
 // ---
 

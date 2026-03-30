@@ -1,5 +1,5 @@
 # --- Define a 'subproject'
-project (nedi VERSION 1.0.0 LANGUAGES C CXX CUDA)
+project (nedi VERSION 1.0.0 LANGUAGES C CXX)
 
 # --- Add header files
 file (GLOB_RECURSE HEADER_FILES
@@ -27,25 +27,25 @@ endif ()
 
 # --- Define the executable
 add_executable (${PROJECT_NAME} ${HEADER_FILES} 
-    src/source.cpp
 	src/stb_image_implementation.cpp
-    src/main.cu 
+    src/main.cpp
 )
 
-
+# --- Enable AVX2
+# --- EIGEN makes it so number of sections exceeded normal object file format.
 target_compile_options(nedi PRIVATE
     $<$<COMPILE_LANGUAGE:CXX>:/arch:AVX2>
+    /bigobj
 )
 
 # --- By default the CUDA compiler uses whole-program compilation. 
 # Effectively this means that all device functions and variables needed to be located 
 #  inside a single file or compilation unit.
-set_property (TARGET ${PROJECT_NAME} PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+#set_property (TARGET ${PROJECT_NAME} PROPERTY CUDA_SEPARABLE_COMPILATION ON)
 
 # --- LIBS For shared by all presets.
 target_link_libraries (${PROJECT_NAME} BLUELIB)
 target_link_libraries (${PROJECT_NAME} STB)
-#target_link_libraries (${PROJECT_NAME} GLM)
 target_link_libraries (${PROJECT_NAME} Eigen3::Eigen)
 
 # ---
@@ -54,12 +54,11 @@ target_include_directories (${PROJECT_NAME} PUBLIC
 )
 
 # --- Disable CUDA warning C5033: 'register' is no longer supported
-target_compile_options (${PROJECT_NAME} PRIVATE
-    $<$<COMPILE_LANGUAGE:CUDA>:
-        -Xcompiler="/wd5033"
-    >
-    $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=/bigobj>
-)
+#target_compile_options (${PROJECT_NAME} PRIVATE
+#    $<$<COMPILE_LANGUAGE:CPP>:
+#        -Xcompiler="/wd5033"
+#    >
+#)
 
 # --- Creates a 'symlink' for output folder in builds directory.
 add_custom_command (

@@ -4,11 +4,11 @@
 //
 #include "image.hpp"
 
+// -----------------------------------------------------------------------------------------------------
 //  IMPORTANT -> Many ways of calculating Coeffs and why it gives different result.
 // -----------------------------------------------------------------------------------------------------
 // All 3 procedures if translated into mathematical equation: 
 //  CalcCoeffsInverse, CalcCoeffsLDLT, CalcCoeffsQR
-//
 // Should give the same mathematical output. But it does not happen in the program, Why?
 //  - Floating-point rounding	> Accumulates differently (and breaks most likely).
 //  - Normal equations	        > Square conditioning.
@@ -37,19 +37,10 @@
 // but in realworld computer programming give 3 different results!
 // -----------------------------------------------------------------------------------------------------
 
-__global__ void CudaDummy (
-    IN u16 CPY x,
-    IN u16 CPY y
-) {}
-
-
-//const u8 WINDOW_DIAGONAL_POSITIONS_SQUARE_4_SIZE = 16;
-//const u8 WINDOW_DIAGONAL_POSITIONS_SQUARE_4 [16][2] { 
-//    {0, 0}, {1, 0}, {2, 0}, {3, 0},
-//    {0, 1}, {1, 1}, {2, 1}, {3, 1},
-//    {0, 2}, {1, 2}, {2, 2}, {3, 2},
-//    {0, 3}, {1, 3}, {2, 3}, {3, 3},
-//};
+//__global__ void CudaDummy (
+//    IN u16 CPY x,
+//    IN u16 CPY y
+//) {}
 
 const u8 WINDOW_DIAGONAL_POSITIONS_CIRCULAR_4_SIZE = 12;
 const u8 WINDOW_DIAGONAL_POSITIONS_CIRCULAR_4 [12][2] { 
@@ -58,16 +49,6 @@ const u8 WINDOW_DIAGONAL_POSITIONS_CIRCULAR_4 [12][2] {
     {0, 2}, {1, 2}, {2, 2}, {3, 2},
             {1, 3}, {2, 3},
 };
-
-//const u8 WINDOW_DIAGONAL_POSITIONS_SQUARE_6_SIZE = 36;
-//const u8 WINDOW_DIAGONAL_POSITIONS_SQUARE_6 [36][2] { 
-//    {0, 0}, {1, 0}, {2, 0}, {3, 0}, {4, 0}, {5, 0},
-//    {0, 1}, {1, 1}, {2, 1}, {3, 1}, {4, 1}, {5, 1},
-//    {0, 2}, {1, 2}, {2, 2}, {3, 2}, {4, 2}, {5, 2},
-//    {0, 3}, {1, 3}, {2, 3}, {3, 3}, {4, 3}, {5, 3},
-//    {0, 4}, {1, 4}, {2, 4}, {3, 4}, {4, 4}, {5, 4},
-//    {0, 5}, {1, 5}, {2, 5}, {3, 5}, {4, 5}, {5, 5},
-//};
 
 const u8 WINDOW_DIAGONAL_POSITIONS_CIRCULAR_6_SIZE = 24;
 const u8 WINDOW_DIAGONAL_POSITIONS_CIRCULAR_6 [24][2] { 
@@ -88,9 +69,9 @@ void ClampMNEDI (
     IN u8 REF dl,
     IN u8 REF rd
 ) {
-    u8 nmin = min (lu, min(ur, min(dl, rd)));
-    u8 nmax = max (lu, max(ur, max(dl, rd)));
-    out = min (max ((u8)out, nmin), nmax);
+    u8 nmin = std::min (lu, std::min(ur, std::min(dl, rd)));
+    u8 nmax = std::max (lu, std::max(ur, std::max(dl, rd)));
+    out = std::min (std::max ((u8)out, nmin), nmax);
 }
 
 
@@ -617,7 +598,7 @@ namespace DIAGONAL_ONLY {
         IT mat4x1r32  REF coeffs,
         //
         //IN u8* const * const& positions,
-        IN u8 (*positions)[2],
+        IN u8         (*positions)[2],
         IN u8         REF positionsSize
     ) {
         for (u16 i = 0; i < positionsSize; ++i) {
@@ -703,7 +684,7 @@ namespace DIAGONAL_ONLY {
     }
 
 
-    void FillLinear (
+    void LinearFill (
         IT u8* CEF otImageData,
         IN u8* CEF inImageData,
         //
@@ -989,7 +970,7 @@ namespace DIAGONAL {
     }
 
 
-    void FillLinear (
+    void LinearFill (
         IT u8* CEF otImageData,
         IN u8* CEF inImageData,
         //
@@ -1316,7 +1297,7 @@ void DiagonalOnlyNEDI_A (
         }
 
         for (u8 iChannel = 0; iChannel < channels; ++iChannel) { // Fill missing diagonal   
-            DIAGONAL_ONLY::FillLinear (
+            DIAGONAL_ONLY::LinearFill (
                 otImageData, inImageData,
                 width, height, channels,
                 cornerOffsetX, cornerOffsetY,
@@ -1387,7 +1368,7 @@ void DiagonalOnlyNEDI_B (
         }
 
         for (u8 iChannel = 0; iChannel < channels; ++iChannel) { // Fill missing diagonal   
-            DIAGONAL_ONLY::FillLinear (
+            DIAGONAL_ONLY::LinearFill (
                 otImageData, inImageData,
                 width, height, channels,
                 cornerOffsetX, cornerOffsetY,
@@ -1454,7 +1435,7 @@ void FullNEDI (
         }
         
         for (u8 iChannel = 0; iChannel < channels; ++iChannel) { // Fill missing diagonal   
-            DIAGONAL::FillLinear (
+            DIAGONAL::LinearFill (
                 otImageData, inImageData,
                 width, height, channels,
                 cornerOffsetX, cornerOffsetY,
@@ -1569,14 +1550,14 @@ s32 main (s32 argumentsCount, c8* arguments[]) {
     }
 
 
-    DEBUG (DEBUG_FLAG_LOGGING) { // --- cuda-min-test -> required for debugger to return a success.
-        const dim3 threads (16, 16);
-        const dim3 blocks  (320 / 16, 320 / 16);
-
-        CudaDummy <<<blocks, threads>>> (
-            320, 320
-        );
-    } // ---
+    //DEBUG (DEBUG_FLAG_LOGGING) { // --- cuda-min-test -> required for debugger to return a success.
+    //    const dim3 threads (16, 16);
+    //    const dim3 blocks  (320 / 16, 320 / 16);
+    //
+    //    CudaDummy <<<blocks, threads>>> (
+    //        320, 320
+    //    );
+    //} // ---
 
 
     if (isFullNedi) { // NEDI-ALL

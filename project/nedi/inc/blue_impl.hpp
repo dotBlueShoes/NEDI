@@ -21,4 +21,4 @@
 	DEBUG (DEBUG_FLAG_LOGGING) putc ('\n', stdout); \
 }
 
-#define REG register
+#define REG

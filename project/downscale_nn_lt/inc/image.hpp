@@ -7,7 +7,7 @@
 #include <stb_image.h>
 #include <stb_image_write.h>
 //
-#include <blue/error.hpp>
+#include "blue_impl.hpp"
 #include <blue/struct.hpp>
 
 //  ABOUT
@@ -77,7 +77,7 @@ namespace IMAGE::PACKED {
 
         // 1op (pdep): (3-cycles)
         //
-        register u32 packedChannel = _pdep_u32 (channels, META32_MASK_CHANNELS);
+        REG u32 packedChannel = _pdep_u32 (channels, META32_MASK_CHANNELS);
 
         //  ABOUT
         // Preserve width/height bits.
